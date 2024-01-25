@@ -1,0 +1,35 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header" *ngFor="let breadscrum of breadscrums">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+            </app-breadcrumb>
+        </div>
+        <div *ngIf="tableload==true" class="tbl-spinner">
+            <mat-progress-spinner color="primary" [diameter]="100" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+        <!-- Loading Generic table as parent component and passing  required data-->
+        <!--
+        columnHeader: a object that contains only that pair of column id:title that are to be shown on dashBoard.
+        tableData : api Response.
+        addAndEditPath : path of the page where Add and edit is handled.
+        uploadComponent : REference of component, which is to be opened in dialog box.
+        csvHeaders : a object that contains ordered pair of column id:title that are to be shown in csv file.
+        csvFileName : Name of the csv File.
+        activeFunction : function refrence that takes data from child , in order to do changes in parent (current) component.
+         -->
+        <generic-table-webxpress *ngIf="!tableload" 
+            [columnHeader]="columnHeader" 
+            [tableData]="csv"
+            [addAndEditPath]="addAndEditPath"
+            [uploadComponent]="uploadComponent"
+            [csvHeaders]="headerForCsv"
+            [csvFileName]="csvFileName"
+            (onFlagChange) = "IsActiveFuntion($event)"
+            [metaData]="METADATA"
+   
+            >
+        </generic-table-webxpress>
+    </div>
+</section>

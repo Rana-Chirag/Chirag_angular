@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-lg-9 col-sm-9" style="margin-bottom: 0px;">
+        <app-generic-card-webxpress [boxData]="BoxData"></app-generic-card-webxpress>
+    </div>
+    <div class="col-lg-3 col-sm-6" style="margin-bottom: 0px;">
+        <div class="row">
+            <div class="col" style="margin-bottom: 0px;">
+                <div class="row mt-2">
+                    <div class="col " style="margin-bottom: 0px;">
+                        <form class="register-form m-4" [formGroup]="AddTableForm">
+                            <div *ngFor="let field of jsonControlArray">
+                                <app-form-webxpress [formItem]="field"
+                                    (callFunction)="functionCaller($event)"></app-form-webxpress>
+                            </div>
+                             <button type="button" class="btn btn-outline-success btn-border-radius  msl-2 mb-2">
+                            <i-feather style="width: 20px;height: 20px;" name="search"></i-feather>
+                        </button>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</div>

@@ -1,0 +1,174 @@
+<form [formGroup]="form">
+
+    <!--textbox controls-->
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="(formItem.type=='text' || formItem.type=='number' || formItem.type=='password') && formItem.generatecontrol===true ">
+        <mat-label>{{formItem.label}}</mat-label>
+
+        <ng-container *ngIf="formItem.type=='password';else elseBlock">
+            <input matInput [type]="setInputType(formItem.name) " formControlName={{formItem.name}}
+                placeholder={{formItem.placeholder}} [readonly]="formItem.disable"
+                (change)="callEvents(formItem.callfunction,'')" (click)="callEvents(formItem.callfunction,'')"
+                autocomplete="off">
+        </ng-container>
+        <mat-icon matSuffix
+            *ngIf="formItem.type=='password' && (formItem.name=='UserPwd' || formItem.name=='confirmpassword')"
+            (click)="formItem.name === 'UserPwd' ? togglePasswordVisibility() : toggleconfirmPasswordVisibility()">
+            {{formItem.name === 'UserPwd' ? (showPassword ? 'visibility_off' : 'visibility') : (ConfirmshowPassword
+            ? 'visibility_off' : 'visibility')}}
+        </mat-icon>
+        <ng-template #elseBlock>
+            <ng-container *ngIf="(formItem.type=='text'||formItem.type=='number');else textInput">
+                <input matInput type="{{formItem.type}}" formControlName={{formItem.name}} [readonly]="formItem.disable"
+                    placeholder={{formItem.placeholder}} suffix={{formItem.suffix}} mask="{{formItem.mask}}"
+                    (change)="formItem.callfunction!='' && callEvents(formItem.callfunction,'')" autocomplete="off">
+            </ng-container>
+            <ng-template #textInput>
+                <input matInput type="{{formItem.type}}" formControlName={{formItem.name}} [readonly]="formItem.disable"
+                    placeholder={{formItem.placeholder}} suffix={{formItem.suffix}} mask="{{formItem.mask}}"
+                    (change)="formItem.callfunction!='' && callEvents(formItem.callfunction,'')"
+                    (click)="formItem.callfunction!='' && callEvents(formItem.callfunction,'')" autocomplete="off">
+            </ng-template>
+        </ng-template>
+
+        <mat-error *ngIf="form.get(formItem.name).hasError('required')">
+            {{formItem.errormessage}}
+        </mat-error>
+        <mat-error *ngIf="form.get(formItem.name).hasError('email')">
+            {{formItem.errormessage}}
+        </mat-error>
+        <mat-error *ngIf="form.get(formItem.name).hasError('pattern')">
+            {{formItem.errormessageforpattern}}
+        </mat-error>
+    </mat-form-field>
+
+    <!--AutoComplete DropDowns-->
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type === 'dropdown' && formItem.name !== 'TimezoneId' && formItem.generatecontrol">
+        <mat-label>{{ formItem.label }}</mat-label>
+        <input matInput [placeholder]="formItem.placeholder" [matAutocomplete]="autocomplete"
+            [formControlName]="formItem.name" [readonly]="formItem.disable"
+            (ngModelChange)="formItem.callfunction !== '' && callEvents(formItem.callfunction, $event)">
+        <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="formItem.displaywith"
+            (optionSelected)="formItem.callfunction !== '' && callEvents(formItem.callfunction, $event)">
+            <mat-option *ngFor="let option of formItem.filterOptions | async" [value]="option">
+                {{option.value}}: {{option.name}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.get(formItem.name)?.hasError('required')">
+            {{ formItem.errormessage }}
+        </mat-error>
+        <mat-error *ngIf="form.get(formItem.name)?.hasError('invalidAutocomplete')">
+            {{ formItem.errormessage }}
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type=='Dropdown' && formItem.name!=='TimezoneId' && formItem.generatecontrol===true">
+        <mat-label>{{formItem.label}}</mat-label>
+        <input matInput placeholder={{formItem.placeholder}} [matAutocomplete]="autocomplete"
+            formControlName={{formItem.name}}>
+        <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="formItem.displaywith"
+            (optionSelected)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)">
+            <mat-option *ngFor="let option of formItem.filterOptions | async" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.get(formItem.name).hasError('required')">
+            {{formItem.errormessage}}
+        </mat-error>
+        <mat-error *ngIf="form.get(formItem.name).hasError('invalidAutocompleteObject')">
+            {{formItem.errormessage}}
+        </mat-error>
+    </mat-form-field>
+
+    <!--Timezone dropdown-->
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type=='dropdown' && formItem.name==='TimezoneId' && formItem.generatecontrol===true">
+        <mat-label>{{formItem.label}}</mat-label>
+        <input matInput placeholder={{formItem.placeholder}} [matAutocomplete]="auto" formControlName={{formItem.name}}>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="formItem.displaywith">
+            <mat-option *ngFor="let option of formItem.filterOptions | async" [value]="option">
+                {{"(UTC" +option.baseUTCOffset + ")" + option.timezoneName}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.get(formItem.name).hasError('invalidAutocompleteObject')">
+            {{formItem.errormessage}}
+        </mat-error>
+    </mat-form-field>
+    <!-- Multiple Input Dropdown -->
+
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type === 'MltDropdown'  && formItem.generatecontrol===true">
+        <mat-select [formControlName]="formItem.name=='Division' ? 'Div' : 'Loc'" placeholder={{formItem.placeholder}}
+            [multiple]="true" #singleSelect
+            (selectionChange)="formItem.displaywith!='' && callEvents(formItem.displaywith,$event)">
+            <mat-option>
+                <ngx-mat-select-search formControlName={{formItem.name}} placeholderLabel={{formItem.placeholder}}
+                    noEntriesFoundLabel="'no matching found'" [showToggleAllCheckbox]="true"
+                    toggleAllCheckboxTooltipMessage="Select / Unselect All"
+                    [toggleAllCheckboxIndeterminate]="isIndeterminate" [toggleAllCheckboxChecked]="isChecked"
+                    (toggleAll)="callEvents(formItem.callfunction,$event)">
+                    <mat-icon ngxMatSelectSearchClear>delete</mat-icon>
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let location of formItem.filterOptions | async" [value]="location"> {{ location.name }}
+            </mat-option>
+        </mat-select>
+        <ng-container *ngFor="let validation of formItem.validators;" ngProjectAs="mat-error">
+            <mat-error *ngIf="myForm.get(formItem.name).hasError(validation.name)">{{
+                validation.message}}
+            </mat-error>
+        </ng-container>
+    </mat-form-field>
+    <!-- Static Dropdown Down Field -->
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type=='Staticdropdown' && formItem.generatecontrol===true">
+        <mat-label>{{formItem.label}}</mat-label>
+        <mat-select formControlName={{formItem.name}}>
+            <mat-option *ngFor="let optValue of formItem.value" [value]="optValue.value"
+                (selectionChange)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)">
+                {{optValue.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!--toggles-->
+    <mat-slide-toggle *ngIf="formItem.type=='toggle' && formItem.generatecontrol===true" color="primary"
+        (change)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)"
+        formControlName={{formItem.name}}>{{formItem.label}}</mat-slide-toggle>
+
+    <!--Datepicker-->
+    <mat-form-field class="example-full-width" appearance="outline"
+        *ngIf="formItem.type=='date' && formItem.generatecontrol===true">
+        <mat-label>{{formItem.label}}</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName={{formItem.name}} [min]="minDate"
+            placeholder={{formItem.placeholder}} [max]="formItem.name==='DOB'?maxDate:''"
+            (dateChange)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!--Checkbox-->
+    <ng-container *ngIf="formItem.type === 'checkbox'">
+        <ng-container *ngIf="formItem.generatecontrol">
+            <mat-checkbox class="example-full-width" [formControlName]="formItem.name"
+                (change)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)">
+                {{formItem.label}}
+            </mat-checkbox>
+        </ng-container>
+    </ng-container>
+
+    <!--Radio Button-->
+    <ng-container *ngIf="formItem.type==='radiobutton' && formItem.generatecontrol">
+        <mat-radio-group [formControlName]="formItem.name"
+            (change)="formItem.callfunction!='' && callEvents(formItem.callfunction,$event)">
+            <mat-radio-button *ngFor="let option of formItem.value" [value]="option.value">
+                {{ option.name }}
+            </mat-radio-button>
+        </mat-radio-group>
+    </ng-container>
+    <!-- OR -->
+    <div style="text-align: center; padding-top: 21px;" *ngIf="formItem.type=='OR'">
+        <span class="label l-bg-purple shadow-style">OR</span>
+    </div>
+</form>

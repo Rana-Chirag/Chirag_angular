@@ -1,0 +1,111 @@
+<section class="content">
+    <div class="container-fluid">
+        <div *ngIf="!FieldDetails" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div *ngIf="FieldDetails">
+            <div class="block-header" *ngFor="let breadscrum of breadscrums">
+                <!-- breadcrumb -->
+                <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+                </app-breadcrumb>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                    </div>
+                    <div class="body" *ngIf="FieldDetails">
+                        <form class="register-form m-4" [formGroup]="FromGrop">
+                            <div class="row">
+                                <div [class]="divcol" *ngFor="let Field of FieldDetails">
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        *ngIf="Field.type=='text'">
+                                        <mat-label>{{Field.label}}</mat-label>
+                                        <input matInput type="Field.type"
+                                            (ngModelChange)="callActionFunction(Field.ActionFunction,$event)"
+                                            [formControlName]="Field.name" autocomplete="off">
+                                    </mat-form-field>
+
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        *ngIf="Field.type=='date'">
+                                        <mat-label>{{Field.label}}</mat-label>
+                                        <input matInput [matDatepicker]="Cnotename" [formControlName]="Field.name"
+                                            [min]="minDate">
+                                        <mat-datepicker-toggle matSuffix [for]="Cnotename"></mat-datepicker-toggle>
+                                        <mat-datepicker #Cnotename></mat-datepicker>
+                                        <mat-error *ngIf="FromGrop.get(Field.name).hasError('required')">
+                                            {{Field.label+"is Required"}}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        *ngIf="Field.type=='dropdown'">
+                                        <mat-label>{{Field.label}}</mat-label>
+                                        <mat-select [formControlName]="Field.name"
+                                            (ngModelChange)="callActionFunction(Field.ActionFunction,$event)">
+                                            <mat-option *ngFor="let option of Field.dropdown"
+                                                [value]="option.CodeId">
+                                                {{ option.CodeDesc }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="FromGrop.get(Field.name).hasError('required')">
+                                            {{Field.label+"is Required"}}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <!--Auto Dropdown -->
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        *ngIf="Field.type=='autodropdown'">
+                                        <mat-label>{{Field.label}}</mat-label>
+                                        <input matInput [formControlName]="Field.name"
+                                            (input)="callActionFunction(Field.Search,'testing')"
+                                            autocomplete="off" [matAutocomplete]="autoBiling">
+                                        <mat-autocomplete #autoBiling="matAutocomplete"
+                                            [displayWith]="displayCnotegropFn"
+                                            (optionSelected)="callActionFunction(Field.ActionFunction,$event)">
+                                            <mat-option *ngFor="let option of filteredData | async"
+                                                [value]="option">
+                                                {{option.Value +":"+ option.Name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error *ngIf="FromGrop.get(Field.name).hasError('required')">
+                                            {{Field.label+"is Required"}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <!----end -->
+
+
+                                    <!-- End -->
+                                    <!--Toggale  -->
+                                    <mat-checkbox class="example-margin"
+                                        (change)="callActionFunction(Field.ActionFunction,$event)" color="primary"
+                                        *ngIf="Field.type=='toggle'"
+                                        [formControlName]="Field.name">{{Field.label}}</mat-checkbox>
+                                    <!-- <mat-slide-toggle  (change)="callActionFunction(Field.ActionFunction,$event)" color="primary" *ngIf="Field.type=='toggle'"
+                                                    [formControlName]="Field.name">{{Field.label}}</mat-slide-toggle> -->
+                                    <mat-form-field class="example-full-width" floatLabel="never" appearance="outline"
+                                        *ngIf="Field.type=='textarea'">
+                                        <mat-label>{{Field.label}}</mat-label>
+                                        <textarea matInput [formControlName]="Field.name"></textarea>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                        <div class="example-button-row d-flex justify-content-end">
+                                            <button class="msr-3" mat-raised-button color="primary" (click)="testing()">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,54 @@
+<div mat-dialog-title style="display: flex;
+justify-content: space-between;margin: 0 0 0px;
+align-items: center;">
+    <h3>{{moduleName}}</h3>
+    <button mat-icon-button aria-label="close dialog" (click)="close()" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div><br>
+<mat-divider></mat-divider>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+          <div class="card">
+            <div class="header">
+              <div style="float:right;"class="preloader pl-size-sm" *ngIf="isUploaded==true">
+                <div class="spinner-layer pl-purple">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="example-container">
+                <form [formGroup]="form">
+                  <div class="row" *ngFor="let formItem of formData">
+                    <div class="col">
+                      <mat-label>Upload File</mat-label>
+                      <app-file-upload  formControlName="{{formItem.name}}" (change)="inputExcelOnClick($event)">
+                      </app-file-upload>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <div class="m-1 ">
+          <button (click)="download()" mat-button color="primary">
+            <mat-icon>get_app</mat-icon>
+            Download {{title}} Upload template file
+          </button>
+          <a *ngIf="isDate" class="left" title="" data-placement="left" data-toggle="tooltip" data-original-title="Please enter date in dd MMM yyyy format">
+            <i class="fa fa-exclamation-circle">
+            </i>(Please enter date in dd MMM yyyy format)</a>
+        </div>
+        <!-- <div class="m-1 ">
+          <button mat-raised-button color="primary" *ngIf="!IsButtonVisible" (click)="uploadFiles()" >Submit</button>
+        </div> -->
+      </div>

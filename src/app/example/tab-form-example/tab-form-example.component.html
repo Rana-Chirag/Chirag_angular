@@ -1,0 +1,7 @@
+<app-common-wrapper-webxpress>
+    <form [formGroup]="tabForm">
+        <generic-tabbed-form-webxpress [tabForm]="tabForm" [tabGroup]="tabData"
+            (functionCallEmitter)="functionCallHandler($event)">
+        </generic-tabbed-form-webxpress>
+    </form>
+</app-common-wrapper-webxpress>

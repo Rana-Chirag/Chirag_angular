@@ -1,0 +1,45 @@
+<app-common-wrapper-webxpress [breadscrums]="breadscrums" > 
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <mat-tab-group (selectedIndexChange)="GetSelectedIndex($event)" #myTabGroup>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon msr-2">home</mat-icon>
+                                Advance Dashboard
+                            </ng-template>
+                            <app-example-dashboard-tabs-Webxpress *ngIf="myTabGroup.selectedIndex== 0"
+                                (CurrentIndex)="GetSelectedIndex($event)"></app-example-dashboard-tabs-Webxpress>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon msr-2">create</mat-icon>
+                                Dashboard Testing
+                            </ng-template>
+                            <mat-tab-group>
+                     
+                                <mat-tab label="Nested Tab 1">
+                                       <!-- Content of Nested Tab 1 -->
+                                   <app-table-example></app-table-example>
+                                </mat-tab>
+                                <mat-tab label="Nested Tab 2">
+                                    <!-- Content of Nested Tab 2 -->
+                                <app-edit-able-table-example></app-edit-able-table-example>  
+                             </mat-tab>
+                                  </mat-tab-group>
+
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon msr-2">create</mat-icon>
+                                Dashboard Testing
+                                
+                            </ng-template>
+                            
+                        </mat-tab>
+               
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+</app-common-wrapper-webxpress>

@@ -1,0 +1,48 @@
+<div mat-dialog-title style="display: flex;
+  justify-content: space-between;margin: 0 0 0px;
+  align-items: center;">
+    <h3> Share Records</h3>
+    <button mat-icon-button aria-label="close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<hr>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="body" style="padding: 0px">
+                <h6 class="text-strong text-center">SELECT DESIRED FORMAT</h6>
+                <div id="dvSenderSelection" class="dvSenderSelection pb-1 text-center">
+                    <div class="dvSenderOnlyMePDF p-2">
+                        <a href="javascript:void(0)" data-val="pdf" class="" target="_blank" id="onlyMe" title="PDF">
+                            <img src="assets/images/icons/csv-large.png" style="height:55px" />
+                        </a>
+                    </div>
+                    <input type="hidden" id="hdnLrFileType" value="pdf">
+                </div>
+                <h5 class="b-b"></h5>
+                <h6 class="text-strong text-center">SELECT METHOD OF SHARING</h6>
+
+
+                <div class="text-center">
+                    <button mat-stroked-button [color]="isActive('download') ? 'primary' : 'secondary'"
+                        (click)="toggleButton('download')" class="msr-3 mt-2">Download</button>
+                    <button mat-stroked-button [color]="isActive('email') ? 'primary' : 'secondary'"
+                        (click)="toggleButton('email')" class="msr-3 mt-2">Email</button>
+                </div>
+
+                <h6 *ngIf="activeButton=='download'" class="text-strong text-center mt-4">Click on <button
+                        class="btn btn-default btn-sm disabled">Get</button> to download files to your computer</h6>
+
+                <h5 class="b-b"></h5>
+
+            </div>
+        </div>
+    </div>
+</div>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button class="msr-2 " color="primary">Get File</button>
+    <button mat-stroked-button class="msr-2">Close</button>
+
+</mat-dialog-actions>

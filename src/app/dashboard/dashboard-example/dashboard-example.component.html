@@ -1,0 +1,12 @@
+<!-- Pass BoxData from parent component to app-generic-dash-board-webxpress(Child component) to render -->
+<section class="content">
+    <div class="container-fluid">
+      <!-- This is the heading of the dashboard -->
+      <h3 class="pl-1 CONTROLTOWER">Dashboard</h3>
+  <div>
+<app-generic-card-webxpress [boxData]="BoxData" ></app-generic-card-webxpress>
+<app-generic-chart-dashboard-webxpress [columnData]="columnData" [pieChartData]="pieChartData" [lineChartData]="lineChartData" [advancePieChart]="advancePieChart" [dashboardControls]="dashboardControls">
+</app-generic-chart-dashboard-webxpress>
+</div>
+</div>
+</section>
